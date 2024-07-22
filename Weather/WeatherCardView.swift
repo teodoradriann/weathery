@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct WeatherCardView: View {
-    let weather: Weather
+    var weather: Weather
 
     var body: some View {
         ZStack(alignment: .topLeading) {

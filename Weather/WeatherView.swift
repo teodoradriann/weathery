@@ -17,6 +17,7 @@ struct WeatherView: View {
     @State private var homeOffset: CGFloat = 0
     @State private var citiesOffset: CGFloat = 0
     @State private var locationOffset: CGFloat = 0
+    @FocusState private var textBarFocused: Bool
     
     var startColor: Color = Color.blue
     var endColor: Color = Color.yellow
@@ -46,6 +47,7 @@ struct WeatherView: View {
             .background(Color.white.opacity(0.8))
             .cornerRadius(20)
             .frame(width: 250)
+            .focused($textBarFocused)
     }
     
     var title: some View {
@@ -70,26 +72,25 @@ struct WeatherView: View {
     }
     
     var searchCity: some View {
-        Button {
-            if cityName != "" {
-                weather.changeCity(newCityName: cityName)
-                weather.checkApi()
-                cityName = ""
-            }
-        } label: {
-            Image(systemName: "magnifyingglass")
-                .foregroundStyle(.white)
-                .scaleEffect(searchScale)
-                .onTapGesture {
-                    withAnimation(.bouncy(duration: 0.2)) {
-                        searchScale = 1.1
-                    }
-                    withAnimation(Animation.easeInOut(duration: 0.2).delay(0.2)) {
-                        searchScale = 1.5
-                    }
-                }
-        }
-    }
+           Button {
+               if cityName != "" {
+                   withAnimation(.bouncy(duration: 0.2)) {
+                       searchScale = 1.0
+                   }
+                   withAnimation(Animation.easeInOut(duration: 0.2).delay(0.2)) {
+                       searchScale = 1.5
+                   }
+                   weather.changeCity(newCityName: cityName)
+                   weather.checkApi()
+                   cityName = ""
+                   textBarFocused = false
+               }
+           } label: {
+               Image(systemName: "magnifyingglass")
+                   .foregroundStyle(.white)
+                   .scaleEffect(searchScale)
+           }
+       }
     
     var backround: some View {
         LinearGradient(colors: [startColor, endColor], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -105,6 +106,12 @@ struct WeatherView: View {
     
     func createTaskbarButton(iconName: String, name: String, offset: Binding<CGFloat>, action: @escaping () -> Void) -> some View {
         return Button {
+            withAnimation(.bouncy(duration: 0.2)) {
+                offset.wrappedValue = -10
+            }
+            withAnimation(Animation.easeInOut(duration: 0.2).delay(0.2)) {
+                offset.wrappedValue = 0
+            }
             action()
         } label: {
             VStack {
@@ -112,14 +119,6 @@ struct WeatherView: View {
                     .foregroundStyle(.white)
                     .font(.title)
                     .offset(y: offset.wrappedValue)
-                    .onTapGesture {
-                        withAnimation(.bouncy(duration: 0.2)) {
-                            offset.wrappedValue = -10
-                        }
-                        withAnimation(Animation.easeInOut(duration: 0.2).delay(0.2)) {
-                            offset.wrappedValue = 0
-                        }
-                    }
             }
         }
     }
@@ -133,7 +132,7 @@ struct WeatherView: View {
             HStack {
                 Spacer()
                 createTaskbarButton(iconName: "house.fill", name: "Home", offset: $homeOffset) {
-                    
+                    weather.coords()
                 }
                 Spacer()
                 createTaskbarButton(iconName: "map.fill", name: "My Cities", offset: $citiesOffset) {
@@ -147,6 +146,7 @@ struct WeatherView: View {
             }
             .padding(.horizontal, 10)
             .opacity(0.8)
+            .ignoresSafeArea(.keyboard)
         }
     }
 }

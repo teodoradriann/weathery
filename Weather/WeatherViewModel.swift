@@ -1,45 +1,45 @@
-//
-//  WeatherViewModel.swift
-//  Weather
-//
-//  Created by Teodor Adrian on 7/21/24.
-//
-
 import SwiftUI
 import Foundation
 
 class WeatherViewModel: ObservableObject {
     @Published private var weather = Weather()
     
-    func checkApi(){
-        weather.fetchCity()
+    func checkApi() {
+        weather.fetchCity { [weak self] updatedWeather in
+            DispatchQueue.main.async {
+                self?.weather = updatedWeather
+                
+                // Now fetch weather details based on the updated city
+                self?.weather.fetchWeather { [weak self] updatedWeather in
+                    DispatchQueue.main.async {
+                        self?.weather = updatedWeather
+                    }
+                }
+            }
+        }
     }
+    
+    // MARK: functions
     
     func changeCity(newCityName: String) {
         weather.setCity(cityName: newCityName)
     }
     
+    func coords() {
+        weather.printCoords()
+    }
+    
+    // MARK: variables
+    
     var city: String {
-        if let city = weather.city {
-            return city
-        } else {
-            return "UNKNOWN"
-        }
+        return weather.city ?? "UNKNOWN"
     }
     
     var temperature: Double {
-        if let temperature = weather.temperature {
-            return temperature
-        } else {
-            return 0.0
-        }
+        return weather.temperature ?? 0.0
     }
     
     var conditionID: Int {
-        if let conditionID = weather.conditionID {
-            return conditionID
-        } else {
-            return 0
-        }
+        return weather.conditionID ?? 0
     }
 }
