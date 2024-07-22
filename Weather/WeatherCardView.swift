@@ -2,7 +2,8 @@ import SwiftUI
 
 struct WeatherCardView: View {
     let weather: Weather
-
+    @State private var iconScale = 1.0
+    
     var body: some View {
         ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 40)
@@ -16,6 +17,15 @@ struct WeatherCardView: View {
                             .foregroundStyle(weather.conditionColor)
                             .frame(width: 80, height: 80)
                             .padding(3)
+                            .scaleEffect(iconScale)
+                            .onTapGesture {
+                                withAnimation(.bouncy(duration: 0.8)) {
+                                    iconScale = 1.7
+                                }
+                                withAnimation(Animation.easeInOut(duration: 0.4).delay(0.3)) {
+                                    iconScale = 1.0
+                                }
+                            }
                         VStack{
                             Text(weather.city ?? "UNKNOWN")
                                 .foregroundStyle(Color.white)
