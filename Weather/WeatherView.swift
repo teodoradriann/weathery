@@ -13,6 +13,7 @@ struct WeatherView: View {
     @State private var cityName = ""
     @State private var animatedGardient: Bool = false
     @State private var rotationAngle: Double = 0
+    @State private var searchScale: Double = 1.5
     @State private var homeOffset: CGFloat = 0
     @State private var citiesOffset: CGFloat = 0
     @State private var locationOffset: CGFloat = 0
@@ -21,32 +22,14 @@ struct WeatherView: View {
     var endColor: Color = Color.yellow
     
     var body: some View {
-        ZStack{
+        ZStack {
             backround
             VStack {
                 title
-                    .padding(25)
-                    .rotationEffect(.degrees(rotationAngle))
-                    .onTapGesture {
-                        withAnimation(.bouncy(duration: 1.2)) {
-                            let randomEffect = Bool.random()
-                            if randomEffect == true {
-                                rotationAngle -= 360
-                            } else {
-                                rotationAngle += 360
-                            }
-                        }
-                    }
                 WeatherCardView(weather: Weather(city: weather.city, temperature: weather.temperature, conditionID: weather.conditionID))
                 Spacer()
-                HStack{
-                    TextField("City name", text: $cityName)
-                        .frame(width: 200)
-                        .textFieldStyle(.plain)
-                        .padding(15)
-                        .background(Color.white.opacity(0.8))
-                        .cornerRadius(20)
-                        .frame(width: 250)
+                HStack {
+                    searchField
                     searchCity
                 }
                 Spacer()
@@ -55,12 +38,34 @@ struct WeatherView: View {
         }
     }
     
+    var searchField: some View {
+        TextField("City name", text: $cityName)
+            .frame(width: 200)
+            .textFieldStyle(.plain)
+            .padding(15)
+            .background(Color.white.opacity(0.8))
+            .cornerRadius(20)
+            .frame(width: 250)
+    }
+    
     var title: some View {
         HStack {
-            Text("weathery")
+            Text("Weathery")
                 .font(Font.custom("cute - Personal Use", size: 80))
                 .opacity(0.9)
                 .foregroundColor(.white)
+                .padding(25)
+                .rotationEffect(.degrees(rotationAngle))
+                .onTapGesture {
+                    withAnimation(.bouncy(duration: 2)) {
+                        let randomEffect = Bool.random()
+                        if randomEffect == true {
+                            rotationAngle -= 360
+                        } else {
+                            rotationAngle += 360
+                        }
+                    }
+                }
         }
     }
     
@@ -72,7 +77,17 @@ struct WeatherView: View {
                 cityName = ""
             }
         } label: {
-            Image(systemName: "magnifyingglass").colorMultiply(.black)
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.white)
+                .scaleEffect(searchScale)
+                .onTapGesture {
+                    withAnimation(.bouncy(duration: 0.2)) {
+                        searchScale = 1.1
+                    }
+                    withAnimation(Animation.easeInOut(duration: 0.2).delay(0.2)) {
+                        searchScale = 1.5
+                    }
+                }
         }
     }
     
