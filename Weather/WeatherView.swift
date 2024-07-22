@@ -38,6 +38,7 @@ struct WeatherView: View {
                 Spacer()
                 taskBar
             }
+            .environment(\.colorScheme, .light)
         }
     }
     
@@ -130,8 +131,7 @@ struct WeatherView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .frame(width: 350, height: 60)
-                .opacity(0.3)
-                .foregroundStyle(.black)
+                .opacity(0.1)
             HStack {
                 Spacer()
                 createTaskbarButton(iconName: "house.fill", name: "Home", offset: $homeOffset) {
