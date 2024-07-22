@@ -29,7 +29,7 @@ struct WeatherView: View {
             backround
             VStack {
                 title
-                WeatherCardView(weather: Weather(city: weather.city, temperature: weather.temperature, conditionID: weather.conditionID, description: weather.description))
+                WeatherCardView(weather: Weather(city: weather.city, temperature: weather.temperature, conditionID: weather.conditionID, description: weather.description, realFeel: weather.realFeel))
                 Spacer()
                 HStack {
                     searchField

@@ -13,15 +13,8 @@ let tempFetchURL = "https://api.openweathermap.org/data/2.5/weather?lat="
 let lonURL = "&lon="
 
 struct Response: Codable {
-    let coord: Coord
     let weather: [WeatherAPI]
     let main: MainAPI
-    let name: String
-}
-
-struct Coord: Codable {
-    let lon: Double
-    let lat: Double
 }
 
 struct WeatherAPI: Codable {

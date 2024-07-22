@@ -36,7 +36,11 @@ class WeatherViewModel: ObservableObject {
     }
     
     var temperature: Double {
-        weather.temperature ?? 0.0
+        weather.temperature ?? 0
+    }
+    
+    var realFeel: Double {
+        weather.realFeel ?? 0
     }
     
     var conditionID: Int {

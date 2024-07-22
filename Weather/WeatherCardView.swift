@@ -31,11 +31,14 @@ struct WeatherCardView: View {
                         Spacer()
                     }
                     Spacer()
-                    HStack() {
-                        Text(weather.temperatureString + "°C")
-                            .font(Font.custom("SF Pro Rounded", size: 60))
+                    VStack(alignment: .center) {
+                        Text(weather.convertTempString(weather.temperature ?? 0) + "°C")
+                            .font(Font.custom("SF Pro Rounded", size: 50))
                             .foregroundStyle(Color.white)
                             .frame(maxWidth: geometry.size.width)
+                        Text("Real feel: \(weather.convertTempString(weather.realFeel ?? 0))°C")
+                            .foregroundStyle(Color.white)
+                            .font(Font.custom("SF Pro Rounded", size: 15))
                     }
                     
                 }
@@ -47,5 +50,5 @@ struct WeatherCardView: View {
 }
 
 #Preview {
-    WeatherCardView(weather: Weather(city: "Bucharest", temperature: 31.5, conditionID: 800, description: "Sunny"))
+    WeatherCardView(weather: Weather(city: "Bucharest", temperature: 31.5, conditionID: 800, description: "Sunny", realFeel: 32))
 }

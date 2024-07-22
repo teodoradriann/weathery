@@ -7,6 +7,7 @@ struct Weather: Codable {
     private(set) var conditionID: Int?
     private(set) var coords: Coords?
     private(set) var description: String?
+    private(set) var realFeel: Double?
     var cityAPI: String?
     
     struct Coords: Codable {
@@ -127,6 +128,7 @@ struct Weather: Codable {
                             var updatedWeather = self
                             let root = try decoder.decode(Response.self, from: data)
                             updatedWeather.temperature = root.main.temp
+                            updatedWeather.realFeel = root.main.feelsLike
                             if let weatherData = root.weather.first {
                                 updatedWeather.conditionID = weatherData.id
                                 updatedWeather.description = weatherData.description
@@ -146,12 +148,9 @@ struct Weather: Codable {
 }
 
 extension Weather {
-    var temperatureString: String {
-        if let temperature = temperature {
-            return String(format: "%.1f", temperature)
-        } else {
-            return "UNKNOWN"
-        }
+    
+    func convertTempString(_ temp: Double) -> String {
+        return String(format: "%.1f", temp)
     }
     
     var conditionName: String {
