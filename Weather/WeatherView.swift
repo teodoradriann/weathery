@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct WeatherView: View {
     @ObservedObject var weather: WeatherViewModel
     
     @State private var cityName = ""
     @State private var animatedGardient: Bool = false
+    @State private var rotationAngle: Double = 0
+    @State private var homeOffset: CGFloat = 0
+    @State private var citiesOffset: CGFloat = 0
+    @State private var locationOffset: CGFloat = 0
     
     var startColor: Color = Color.blue
     var endColor: Color = Color.yellow
@@ -20,7 +24,19 @@ struct ContentView: View {
         ZStack{
             backround
             VStack {
-                title.padding(25)
+                title
+                    .padding(25)
+                    .rotationEffect(.degrees(rotationAngle))
+                    .onTapGesture {
+                        withAnimation(.bouncy(duration: 1.2)) {
+                            let randomEffect = Bool.random()
+                            if randomEffect == true {
+                                rotationAngle -= 360
+                            } else {
+                                rotationAngle += 360
+                            }
+                        }
+                    }
                 WeatherCardView(weather: Weather(city: weather.city, temperature: weather.temperature, conditionID: weather.conditionID))
                 Spacer()
                 HStack{
@@ -49,16 +65,16 @@ struct ContentView: View {
     }
     
     var searchCity: some View {
-            Button {
-                if cityName != "" {
-                    weather.changeCity(newCityName: cityName)
-                    weather.checkApi()
-                    cityName = ""
-                }
-            } label: {
-                Image(systemName: "magnifyingglass").colorMultiply(.black)
+        Button {
+            if cityName != "" {
+                weather.changeCity(newCityName: cityName)
+                weather.checkApi()
+                cityName = ""
             }
+        } label: {
+            Image(systemName: "magnifyingglass").colorMultiply(.black)
         }
+    }
     
     var backround: some View {
         LinearGradient(colors: [startColor, endColor], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -67,12 +83,12 @@ struct ContentView: View {
             .onAppear {
                 withAnimation(.easeInOut(duration: 3)
                     .repeatForever(autoreverses: true)){
-                    animatedGardient.toggle()
+                        animatedGardient.toggle()
+                    }
             }
-        }
     }
     
-    func createTaskbarButton(iconName: String, name: String, action: @escaping () -> Void) -> some View {
+    func createTaskbarButton(iconName: String, name: String, offset: Binding<CGFloat>, action: @escaping () -> Void) -> some View {
         return Button {
             action()
         } label: {
@@ -80,38 +96,48 @@ struct ContentView: View {
                 Image(systemName: iconName)
                     .foregroundStyle(.white)
                     .font(.title)
+                    .offset(y: offset.wrappedValue)
+                    .onTapGesture {
+                        withAnimation(.bouncy(duration: 0.2)) {
+                            offset.wrappedValue = -10
+                        }
+                        withAnimation(Animation.easeInOut(duration: 0.2).delay(0.2)) {
+                            offset.wrappedValue = 0
+                        }
+                    }
             }
         }
     }
-
+    
     var taskBar: some View {
-            ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 350, height: 60)
-                    .opacity(0.4)
-                HStack {
-                    Spacer()
-                    createTaskbarButton(iconName: "house.fill", name: "Home") {
-                        
-                    }
-                    Spacer()
-                    createTaskbarButton(iconName: "map.fill", name: "My Cities") {
-                        
-                    }
-                    Spacer()
-                    createTaskbarButton(iconName: "paperplane.fill", name: "My Location") {
-                        
-                    }
-                    Spacer()
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .frame(width: 350, height: 60)
+                .opacity(0.3)
+                .foregroundStyle(.black)
+            HStack {
+                Spacer()
+                createTaskbarButton(iconName: "house.fill", name: "Home", offset: $homeOffset) {
+                    
                 }
-                .padding(.horizontal, 10)
-                .opacity(0.8)
+                Spacer()
+                createTaskbarButton(iconName: "map.fill", name: "My Cities", offset: $citiesOffset) {
+                    
+                }
+                Spacer()
+                createTaskbarButton(iconName: "paperplane.fill", name: "My Location", offset: $locationOffset) {
+                    
+                }
+                Spacer()
             }
+            .padding(.horizontal, 10)
+            .opacity(0.8)
         }
     }
+}
 
 
 
 #Preview {
-    ContentView(weather: WeatherViewModel())
+    WeatherView(weather: WeatherViewModel())
 }

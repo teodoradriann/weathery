@@ -26,7 +26,7 @@ struct WeatherCardView: View {
                     }
                     Spacer()
                     HStack() {
-                        Text(weather.temperatureString + " °C")
+                        Text(weather.temperatureString + "°C")
                             .font(Font.custom("SF Pro Rounded", size: 60))
                             .foregroundStyle(Color.white)
                             .frame(maxWidth: geometry.size.width)
