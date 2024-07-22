@@ -18,16 +18,18 @@ struct WeatherView: View {
     @State private var citiesOffset: CGFloat = 0
     @State private var locationOffset: CGFloat = 0
     @FocusState private var textBarFocused: Bool
+    @State private var pressedSearch: Bool = false
     
     var startColor: Color = Color.blue
     var endColor: Color = Color.yellow
     
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         ZStack {
             backround
             VStack {
                 title
-                WeatherCardView(weather: Weather(city: weather.city, temperature: weather.temperature, conditionID: weather.conditionID))
+                WeatherCardView(weather: Weather(city: weather.city, temperature: weather.temperature, conditionID: weather.conditionID, description: weather.description))
                 Spacer()
                 HStack {
                     searchField
@@ -40,7 +42,7 @@ struct WeatherView: View {
     }
     
     var searchField: some View {
-        TextField("City name", text: $cityName)
+        TextField("City Name", text: $cityName)
             .frame(width: 200)
             .textFieldStyle(.plain)
             .padding(15)
@@ -48,6 +50,7 @@ struct WeatherView: View {
             .cornerRadius(20)
             .frame(width: 250)
             .focused($textBarFocused)
+            .environment(\.colorScheme, .light)
     }
     
     var title: some View {
@@ -73,13 +76,13 @@ struct WeatherView: View {
     
     var searchCity: some View {
            Button {
+               withAnimation(.bouncy(duration: 0.2)) {
+                   searchScale = 1.0
+               }
+               withAnimation(Animation.easeInOut(duration: 0.2).delay(0.2)) {
+                   searchScale = 1.5
+               }
                if cityName != "" {
-                   withAnimation(.bouncy(duration: 0.2)) {
-                       searchScale = 1.0
-                   }
-                   withAnimation(Animation.easeInOut(duration: 0.2).delay(0.2)) {
-                       searchScale = 1.5
-                   }
                    weather.changeCity(newCityName: cityName)
                    weather.checkApi()
                    cityName = ""

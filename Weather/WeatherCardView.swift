@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct WeatherCardView: View {
-    var weather: Weather
+    let weather: Weather
 
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -16,12 +16,18 @@ struct WeatherCardView: View {
                             .foregroundStyle(weather.conditionColor)
                             .frame(width: 80, height: 80)
                             .padding(3)
-                        Text(weather.city!)
-                            .foregroundStyle(Color.white)
-                            .font(Font.custom("SF Pro Rounded", size: 50))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
-                            .frame(maxWidth: geometry.size.width)
+                        VStack{
+                            Text(weather.city ?? "UNKNOWN")
+                                .foregroundStyle(Color.white)
+                                .font(Font.custom("SF Pro Rounded", size: 50))
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
+                                .frame(maxWidth: geometry.size.width)
+                            Text(weather.description ?? "UNKNOWN")
+                                .font(Font.custom("SF Pro Rounded", size: 20))
+                                .foregroundStyle(.white)
+                        }
+                        
                         Spacer()
                     }
                     Spacer()
@@ -41,5 +47,5 @@ struct WeatherCardView: View {
 }
 
 #Preview {
-    WeatherCardView(weather: Weather(city: "Bucharest", temperature: 31.5, conditionID: 501))
+    WeatherCardView(weather: Weather(city: "Bucharest", temperature: 31.5, conditionID: 800, description: "Sunny"))
 }

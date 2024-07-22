@@ -6,6 +6,7 @@ struct Weather: Codable {
     private(set) var temperature: Double?
     private(set) var conditionID: Int?
     private(set) var coords: Coords?
+    private(set) var description: String?
     var cityAPI: String?
     
     struct Coords: Codable {
@@ -90,7 +91,57 @@ struct Weather: Codable {
     }
     
     func fetchWeather(completion: @escaping (Weather) -> Void) {
+        let urlToFetch: String
+        let lonString: String
+        let lanString: String
         
+        if cityAPI != nil {
+            if let lon = coords?.lon, let lan = coords?.lat {
+                
+                (lonString, lanString) = convertToString(lon, lan)
+                urlToFetch = tempFetchURL + lanString + lonURL + lonString + appID + "&units=metric"
+                
+                guard let url = URL(string: urlToFetch) else {
+                    return
+                }
+                
+                var request = URLRequest(url: url)
+                request.httpMethod = "GET"
+                
+                let session = URLSession.shared
+                let task = session.dataTask(with: request) { data, response, error in
+                    
+                    if let error = error {
+                        print("Error: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    if let response = response as? HTTPURLResponse {
+                        print("Status Code: \(response.statusCode)")
+                    }
+                    
+                    if let data = data {
+                        do {
+                            let decoder = JSONDecoder()
+                            decoder.keyDecodingStrategy = .convertFromSnakeCase
+                            var updatedWeather = self
+                            let root = try decoder.decode(Response.self, from: data)
+                            updatedWeather.temperature = root.main.temp
+                            if let weatherData = root.weather.first {
+                                updatedWeather.conditionID = weatherData.id
+                                updatedWeather.description = weatherData.description
+                            }
+                            completion(updatedWeather)
+                        } catch {
+                            print("Error decoding JSON: \(error.localizedDescription)")
+                        }
+                    }
+                }
+                task.resume()
+            }
+        } else {
+            return
+        }
     }
 }
 

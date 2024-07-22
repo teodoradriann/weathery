@@ -9,7 +9,7 @@ class WeatherViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.weather = updatedWeather
                 
-                // Now fetch weather details based on the updated city
+                // fetch weather details based on the updated city
                 self?.weather.fetchWeather { [weak self] updatedWeather in
                     DispatchQueue.main.async {
                         self?.weather = updatedWeather
@@ -32,14 +32,19 @@ class WeatherViewModel: ObservableObject {
     // MARK: variables
     
     var city: String {
-        return weather.city ?? "UNKNOWN"
+        weather.city ?? "UNKNOWN"
     }
     
     var temperature: Double {
-        return weather.temperature ?? 0.0
+        weather.temperature ?? 0.0
     }
     
     var conditionID: Int {
-        return weather.conditionID ?? 0
+        weather.conditionID ?? 0
+    }
+    
+    var description: String {
+        weather.description ?? "UNKNOWN"
     }
 }
+
