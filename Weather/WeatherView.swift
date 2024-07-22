@@ -20,7 +20,8 @@ struct ContentView: View {
         ZStack{
             backround
             VStack {
-                title.padding()
+                title.padding(25)
+                WeatherCardView(weather: Weather(city: weather.city, temperature: weather.temperature, conditionID: weather.conditionID))
                 Spacer()
                 HStack{
                     TextField("City name", text: $cityName)
@@ -40,7 +41,10 @@ struct ContentView: View {
     
     var title: some View {
         HStack {
-            Text("weathery").font(Font.custom("cute - Personal Use", size: 80)).opacity(0.7)
+            Text("weathery")
+                .font(Font.custom("cute - Personal Use", size: 80))
+                .opacity(0.9)
+                .foregroundColor(.white)
         }
     }
     
@@ -61,7 +65,8 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             .hueRotation(.degrees(animatedGardient ? 45 : 0))
             .onAppear {
-                withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)){
+                withAnimation(.easeInOut(duration: 3)
+                    .repeatForever(autoreverses: true)){
                     animatedGardient.toggle()
             }
         }
@@ -73,7 +78,7 @@ struct ContentView: View {
         } label: {
             VStack {
                 Image(systemName: iconName)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white)
                     .font(.title)
             }
         }
@@ -90,7 +95,7 @@ struct ContentView: View {
                         
                     }
                     Spacer()
-                    createTaskbarButton(iconName: "list.bullet.rectangle.fill", name: "My Cities") {
+                    createTaskbarButton(iconName: "map.fill", name: "My Cities") {
                         
                     }
                     Spacer()

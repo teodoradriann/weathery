@@ -6,28 +6,27 @@
 //
 
 import Foundation
-
-let cityFetchURL = "https://api.openweathermap.org/geo/1.0/direct?q="
-let cityLimit = "&limit=1"
-let appID = "&appid=d47db0c5ab7df0b6ea1d71bfdf6862a8"
+import SwiftUI
 
 struct Weather {
-    private var city: String?
-    private var temperature: Double?
-    private var conditionID: Int?
-    private var coords: Coords?
+    private(set) var city: String?
+    private(set) var temperature: Double?
+    private(set) var conditionID: Int?
+    private(set) var coords: Coords?
     
     var temperatureString: String {
-        if let temperatureGood = temperature {
-            return String(format: "%.1f", temperatureGood)
+        if let temperature = temperature {
+            return String(format: "%.1f", temperature)
         } else {
-            return ""
+            return "UNKNOWN"
         }
     }
     
     var conditionName: String {
-        if let conditionIDGood = conditionID {
-            switch conditionIDGood {
+        if let conditionID = conditionID {
+            switch conditionID {
+            case 0:
+                return "questionmark"
             case 200...232:
                 return "cloud.bolt"
             case 300...321:
@@ -46,7 +45,34 @@ struct Weather {
                 return "cloud"
             }
         } else {
-            return ""
+            return "UNKNOWN"
+        }
+    }
+    
+    var conditionColor: Color {
+        if let conditionID = conditionID {
+            switch conditionID {
+            case 0:
+                return Color.white
+            case 200...232:
+                return Color.cyan
+            case 300...321:
+                return Color.teal
+            case 500...531:
+                return Color.blue
+            case 600...622:
+                return Color.white
+            case 701...781:
+                return Color.gray
+            case 800:
+                return Color.yellow
+            case 801...804:
+                return Color.orange
+            default:
+                return Color.cyan
+            }
+        } else {
+            return Color.white
         }
     }
     
@@ -74,8 +100,8 @@ struct Weather {
         let urlToFetch: String
         
         // build the URL to call
-        if let cityGood = city {
-            urlToFetch = cityFetchURL + cityGood + cityLimit + appID
+        if let city = city {
+            urlToFetch = cityFetchURL + city + cityLimit + appID
         } else {
             return
         }
@@ -121,5 +147,38 @@ struct Weather {
             }
         }
         task.resume()
+    }
+    
+    func convertToString(_ value1: Double, _ value2: Double) -> (String, String) {
+        let string1 = "\(value1)"
+        let string2 = "\(value2)"
+        return (string1, string2)
+    }
+    
+    mutating func fetchWeather() {
+        let urlToFetch: String
+        
+        if let city = city {
+            if let latCoord = coords?.lat, let lonCoord = coords?.lon {
+                let (lat, lon) = convertToString(latCoord, lonCoord)
+                
+                urlToFetch =  tempFetchURL + lat + lonURL + lon + appID
+                
+                guard let url = URL(string: urlToFetch) else {
+                    return
+                }
+                
+                var request = URLRequest(url: url)
+                request.httpMethod = "GET"
+                
+                let session = URLSession.shared
+                //let task =
+                
+                
+            }
+        } else {
+            return
+        }
+        
     }
 }

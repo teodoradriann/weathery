@@ -17,6 +17,9 @@
 		3A93D8F42C4DD092005C4999 /* Weather in October (Demo).otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A93D8F22C4DD092005C4999 /* Weather in October (Demo).otf */; };
 		3A93D9032C4DDEA1005C4999 /* BillionDreams.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A93D9022C4DDEA1005C4999 /* BillionDreams.ttf */; };
 		3A93D9052C4DDF9E005C4999 /* cute.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A93D9042C4DDF9E005C4999 /* cute.ttf */; };
+		3A93D9072C4EB167005C4999 /* SF-Pro-Rounded-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A93D9062C4EB167005C4999 /* SF-Pro-Rounded-Regular.otf */; };
+		3A93D9092C4EBE8C005C4999 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A93D9082C4EBE8C005C4999 /* SF-Pro-Display-Bold.otf */; };
+		3A93D90B2C4EC3E3005C4999 /* APIdata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93D90A2C4EC3E3005C4999 /* APIdata.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		3A93D8F62C4DD1B8005C4999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3A93D9022C4DDEA1005C4999 /* BillionDreams.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BillionDreams.ttf; sourceTree = "<group>"; };
 		3A93D9042C4DDF9E005C4999 /* cute.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = cute.ttf; sourceTree = "<group>"; };
+		3A93D9062C4EB167005C4999 /* SF-Pro-Rounded-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Regular.otf"; sourceTree = "<group>"; };
+		3A93D9082C4EBE8C005C4999 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
+		3A93D90A2C4EC3E3005C4999 /* APIdata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIdata.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +76,7 @@
 				3A93D8DF2C4D93F2005C4999 /* WeatherView.swift */,
 				3A93D8EF2C4DC041005C4999 /* WeatherCardView.swift */,
 				3A93D8EB2C4D943D005C4999 /* WeatherApp.swift */,
+				3A93D90A2C4EC3E3005C4999 /* APIdata.swift */,
 				3A93D8ED2C4D944B005C4999 /* WeatherViewModel.swift */,
 				3A93D8E12C4D93F3005C4999 /* Assets.xcassets */,
 				3A93D8E32C4D93F3005C4999 /* Preview Content */,
@@ -90,6 +97,8 @@
 			children = (
 				3A93D9022C4DDEA1005C4999 /* BillionDreams.ttf */,
 				3A93D9042C4DDF9E005C4999 /* cute.ttf */,
+				3A93D9062C4EB167005C4999 /* SF-Pro-Rounded-Regular.otf */,
+				3A93D9082C4EBE8C005C4999 /* SF-Pro-Display-Bold.otf */,
 				3A93D8F22C4DD092005C4999 /* Weather in October (Demo).otf */,
 			);
 			path = Fonts;
@@ -157,7 +166,9 @@
 				3A93D9032C4DDEA1005C4999 /* BillionDreams.ttf in Resources */,
 				3A93D8E52C4D93F3005C4999 /* Preview Assets.xcassets in Resources */,
 				3A93D8F42C4DD092005C4999 /* Weather in October (Demo).otf in Resources */,
+				3A93D9092C4EBE8C005C4999 /* SF-Pro-Display-Bold.otf in Resources */,
 				3A93D8E22C4D93F3005C4999 /* Assets.xcassets in Resources */,
+				3A93D9072C4EB167005C4999 /* SF-Pro-Rounded-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A93D90B2C4EC3E3005C4999 /* APIdata.swift in Sources */,
 				3A93D8E02C4D93F2005C4999 /* WeatherView.swift in Sources */,
 				3A93D8EE2C4D944B005C4999 /* WeatherViewModel.swift in Sources */,
 				3A93D8EC2C4D943D005C4999 /* WeatherApp.swift in Sources */,
